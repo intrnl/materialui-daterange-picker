@@ -23,8 +23,6 @@ import {
 import Header from './Header';
 import Day from './Day';
 
-
-// eslint-disable-next-line no-unused-vars
 import { NavigationAction, DateRange } from '../types';
 
 const WEEK_DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -78,7 +76,6 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
     maxDate,
   } = props;
 
-  // eslint-disable-next-line react/destructuring-assignment
   const [back, forward] = props.navState;
 
   return (
@@ -115,7 +112,6 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
           className={classes.daysContainer}
         >
           {chunks(getDaysInMonth(date), 7).map((week, idx) => (
-            // eslint-disable-next-line react/no-array-index-key
             <Grid key={idx} container direction="row" justifyContent="center">
               {week.map((day) => {
                 const isStart = isStartOfRange(dateRange, day);

@@ -9,13 +9,10 @@ import {
   isWithinRange,
   isSameMonth,
   addMonths,
-  parse,
-  isValid,
   min,
   max,
 } from 'date-fns';
 
-// eslint-disable-next-line no-unused-vars
 import { DateRange } from './types';
 
 export const identity = <T>(x: T) => x;
@@ -68,8 +65,11 @@ type Falsy = false | null | undefined | 0 | '';
 
 export const parseOptionalDate = (date: Date | string | Falsy, defaultValue: Date) => {
   if (date) {
-    const parsed = parse(date);
-    if (isValid(parsed)) return parsed;
+    const parsed = new Date(date);
+    
+    if (!Number.isNaN(parsed)) {
+      return parsed
+    }
   }
   return defaultValue;
 };

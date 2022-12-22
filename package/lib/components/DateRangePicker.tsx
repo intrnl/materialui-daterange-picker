@@ -1,24 +1,14 @@
-/* eslint-disable no-multi-assign */
-/* eslint-disable no-param-reassign */
-
 import * as React from 'react';
 import {
   addMonths,
   isSameDay,
-  isWithinRange,
   isAfter,
   isBefore,
-  isSameMonth,
   addYears,
-  max,
-  min,
 } from 'date-fns';
 
-// eslint-disable-next-line no-unused-vars
-import { DateRange, NavigationAction, DefinedRange } from '../types';
+import { DateRange, NavigationAction } from '../types';
 import { getValidatedMonths, parseOptionalDate } from '../utils';
-
-import { defaultRanges } from '../defaults';
 
 import Menu from './Menu';
 
@@ -31,7 +21,6 @@ export const MARKERS: { [key: string]: Marker } = {
 
 interface DateRangePickerProps {
   initialDateRange?: DateRange;
-  definedRanges?: DefinedRange[];
   minDate?: Date | string;
   maxDate?: Date | string;
   onChange: (dateRange: DateRange) => void;
@@ -40,14 +29,13 @@ interface DateRangePickerProps {
 const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
   props: DateRangePickerProps,
 ) => {
-  const today = new Date();
+  const today = React.useMemo(() => new Date(), []);
 
   const {
     onChange,
     initialDateRange,
     minDate,
     maxDate,
-    definedRanges = defaultRanges,
   } = props;
 
   const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
@@ -80,29 +68,6 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
     }
   };
 
-  const setDateRangeValidated = (range: DateRange) => {
-    let { startDate: newStart, endDate: newEnd } = range;
-
-    if (newStart && newEnd) {
-      range.startDate = newStart = max(newStart, minDateValid);
-      range.endDate = newEnd = min(newEnd, maxDateValid);
-
-      setDateRange(range);
-      onChange(range);
-
-      setFirstMonth(newStart);
-      setSecondMonth(isSameMonth(newStart, newEnd) ? addMonths(newStart, 1) : newEnd);
-    } else {
-      const emptyRange = {};
-
-      setDateRange(emptyRange);
-      onChange(emptyRange);
-
-      setFirstMonth(today);
-      setSecondMonth(addMonths(firstMonth, 1));
-    }
-  };
-
   const onDayClick = (day: Date) => {
     if (startDate && !endDate) {
       const newRange = day < startDate
@@ -112,6 +77,9 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
       onChange(newRange);
       setDateRange(newRange);
     } else {
+      const newRange = { startDate: day, endDate: undefined }
+
+      onChange(newRange)
       setDateRange({ startDate: day, endDate: undefined });
     }
     
@@ -163,12 +131,10 @@ const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (
       dateRange={dateRange}
       minDate={minDateValid}
       maxDate={maxDateValid}
-      ranges={definedRanges}
       firstMonth={firstMonth}
       secondMonth={secondMonth}
       setFirstMonth={setFirstMonthValidated}
       setSecondMonth={setSecondMonthValidated}
-      setDateRange={setDateRangeValidated}
       helpers={helpers}
       handlers={handlers}
     />
