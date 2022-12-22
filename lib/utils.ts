@@ -58,9 +58,8 @@ export const isRangeSameDay = ({ startDate, endDate }: DateRange) => {
 	return false;
 };
 
-type Falsy = false | null | undefined | 0 | '';
 
-export const parseOptionalDate = (date: Date | string | Falsy, defaultValue: Date) => {
+export const parseOptionalDate = (date: Date | number | undefined, defaultValue: Date) => {
 	if (date) {
 		const parsed = new Date(date);
 
@@ -68,6 +67,7 @@ export const parseOptionalDate = (date: Date | string | Falsy, defaultValue: Dat
 			return parsed;
 		}
 	}
+
 	return defaultValue;
 };
 
@@ -80,5 +80,6 @@ export const getValidatedMonths = (range: DateRange, minDate: Date, maxDate: Dat
 
 		return [newStart, isSameMonth(newStart, newEnd) ? addMonths(newStart, 1) : newEnd];
 	}
+	
 	return [startDate, endDate];
 };
