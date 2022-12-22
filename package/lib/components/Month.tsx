@@ -102,7 +102,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
           const highlighted = inDateRange(dateRange, day) || helpers.inHoverRange(day);
 
           if (!isSameMonth(date, day)) {
-            return <div />
+            return <div key={idx} />
           }
 
           return (
