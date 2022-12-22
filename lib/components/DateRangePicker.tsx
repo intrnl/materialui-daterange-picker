@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import { addMonths, addYears, isAfter, isBefore, isSameDay } from 'date-fns';
+import { makeStyles, Divider } from '@material-ui/core';
+
+import { addMonths, addYears, differenceInCalendarMonths, isAfter, isBefore, isSameDay } from 'date-fns';
 
 import { type DateRange, type NavigationAction } from '../types';
 import { getValidatedMonths, parseOptionalDate } from '../utils';
 
-import Menu from './Menu';
+import Month from './Month';
 
 
 type Marker = symbol;
@@ -15,22 +17,30 @@ export const MARKERS: { [key: string]: Marker } = {
 	SECOND_MONTH: Symbol('secondMonth'),
 };
 
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		gap: '16px',
+	},
+}));
+
 interface DateRangePickerProps {
 	initialDateRange?: DateRange;
-	minDate?: Date | string;
-	maxDate?: Date | string;
+	minDate?: Date | number;
+	maxDate?: Date | number;
 	onChange: (dateRange: DateRange) => void;
 }
 
 const DateRangePicker = (props: DateRangePickerProps) => {
-	const today = React.useMemo(() => new Date(), []);
-
 	const {
 		onChange,
 		initialDateRange,
 		minDate,
 		maxDate,
 	} = props;
+
+	const classes = useStyles();
+	const today = React.useMemo(() => new Date(), []);
 
 	const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
 	const maxDateValid = parseOptionalDate(maxDate, addYears(today, 10));
@@ -120,18 +130,35 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 		onMonthNavigate,
 	};
 
+	const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
+	const commonProps = {
+		dateRange,
+		minDate,
+		maxDate,
+		helpers,
+		handlers,
+	};
+
 	return (
-		<Menu
-			dateRange={dateRange}
-			minDate={minDateValid}
-			maxDate={maxDateValid}
-			firstMonth={firstMonth}
-			secondMonth={secondMonth}
-			setFirstMonth={setFirstMonthValidated}
-			setSecondMonth={setSecondMonthValidated}
-			helpers={helpers}
-			handlers={handlers}
-		/>
+		<div className={classes.root}>
+			<Month
+				{...commonProps}
+				value={firstMonth}
+				setValue={setFirstMonthValidated}
+				navState={[true, canNavigateCloser]}
+				marker={MARKERS.FIRST_MONTH}
+			/>
+
+			<Divider flexItem orientation='vertical' />
+
+			<Month
+				{...commonProps}
+				value={secondMonth}
+				setValue={setSecondMonthValidated}
+				navState={[canNavigateCloser, true]}
+				marker={MARKERS.SECOND_MONTH}
+			/>
+		</div>
 	);
 };
 

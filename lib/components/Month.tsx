@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
-import { format, getDate, isSameMonth, isToday, isWithinInterval, startOfWeek } from 'date-fns';
+import { format, getDate, isSameMonth, isToday, startOfWeek } from 'date-fns';
 
 import Day from './Day';
 import Header from './Header';
@@ -32,8 +32,8 @@ interface MonthProps {
 	value: Date;
 	marker: symbol;
 	dateRange: DateRange;
-	minDate: Date;
-	maxDate: Date;
+	minDate?: Date | number;
+	maxDate?: Date | number;
 	navState: [boolean, boolean];
 	setValue: (date: Date) => void;
 	helpers: {
@@ -46,7 +46,7 @@ interface MonthProps {
 	};
 }
 
-const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
+const Month = (props: MonthProps) => {
 	const classes = useStyles();
 
 	const {
@@ -93,14 +93,14 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
 				))}
 
 				{getDaysInMonth(date).map((day, idx) => {
+					if (!isSameMonth(date, day)) {
+						return <div key={idx} />;
+					}
+
 					const isStart = isStartOfRange(dateRange, day);
 					const isEnd = isEndOfRange(dateRange, day);
 					const isRangeOneDay = isRangeSameDay(dateRange);
 					const highlighted = inDateRange(dateRange, day) || helpers.inHoverRange(day);
-
-					if (!isSameMonth(date, day)) {
-						return <div key={idx} />;
-					}
 
 					return (
 						<Day
@@ -108,7 +108,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
 							filled={isStart || isEnd}
 							outlined={isToday(day)}
 							highlighted={highlighted && !isRangeOneDay}
-							disabled={!isWithinInterval(day, { start: minDate, end: maxDate })}
+							disabled={(minDate != null && day >= minDate) && (maxDate != null && day <= maxDate)}
 							onClick={() => handlers.onDayClick(day)}
 							onHover={() => handlers.onDayHover(day)}
 							value={getDate(day)}
