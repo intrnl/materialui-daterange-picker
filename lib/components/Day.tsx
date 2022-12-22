@@ -94,7 +94,7 @@ const Day = (props: DayProps) => {
 			<IconButton
 				className={combine(
 					classes.button,
-					!disabled && outlined && classes.outlined,
+					!disabled && outlined && !filled && classes.outlined,
 					!disabled && filled && classes.filled,
 				)}
 				disabled={disabled}
