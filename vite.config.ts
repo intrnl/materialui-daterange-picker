@@ -12,14 +12,13 @@ export default defineConfig({
       fileName: 'materialui-daterange-picker',
     },
     rollupOptions: {
-      external: [
-        '@material-ui/core',
-        '@material-ui/icons',
-        'date-fns',
-        'react',
-        'react/jsx-runtime',
-        'react-dom',
-      ],
+      external (source, importer) {
+        if (!importer) {
+          return false;
+        }
+
+        return !(/\.{1,2}/).test(source);
+      },
       output: {
         freeze: false,
       },
