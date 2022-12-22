@@ -10,7 +10,6 @@
 	"devDependencies": {
 		"@material-ui/core": "^4.12.4",
 		"@material-ui/icons": "^4.11.3",
-		"@types/classnames": "^2.3.1",
 		"@types/react": "^17.0.52",
 		"@types/react-dom": "^17",
 		"@vitejs/plugin-react": "^3.0.0",
@@ -19,8 +18,5 @@
 		"react-dom": "^17.0.2",
 		"typescript": "^3.9.10",
 		"vite": "^4.0.3"
-	},
-	"dependencies": {
-		"classnames": "^2.3.2"
 	}
 }

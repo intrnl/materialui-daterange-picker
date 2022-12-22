@@ -3,24 +3,18 @@ lockfileVersion: 5.4
 specifiers:
   '@material-ui/core': ^4.12.4
   '@material-ui/icons': ^4.11.3
-  '@types/classnames': ^2.3.1
   '@types/react': ^17.0.52
   '@types/react-dom': ^17
   '@vitejs/plugin-react': ^3.0.0
-  classnames: ^2.3.2
   date-fns: ^1.30.1
   react: ^17.0.2
   react-dom: ^17.0.2
   typescript: ^3.9.10
   vite: ^4.0.3
 
-dependencies:
-  classnames: 2.3.2
-
 devDependencies:
   '@material-ui/core': 4.12.4_gzv7pa6nrbev3fs6gyzn7sadkq
   '@material-ui/icons': 4.11.3_5ywzebzghivvobqcm5a7bi6ptu
-  '@types/classnames': 2.3.1
   '@types/react': 17.0.52
   '@types/react-dom': 17.0.18
   '@vitejs/plugin-react': 3.0.0_vite@4.0.3
@@ -631,13 +625,6 @@ packages:
       react-is: 17.0.2
     dev: true
 
-  /@types/classnames/2.3.1:
-    resolution: {integrity: sha512-zeOWb0JGBoVmlQoznvqXbE0tEC/HONsnoUNH19Hc96NFsTAwTXbTqb8FMYkru1F/iqp7a18Ws3nWJvtA1sHD1A==}
-    deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
-    dependencies:
-      classnames: 2.3.2
-    dev: true
-
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
@@ -712,9 +699,6 @@ packages:
       escape-string-regexp: 1.0.5
       supports-color: 5.5.0
     dev: true
-
-  /classnames/2.3.2:
-    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
 
   /clsx/1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
