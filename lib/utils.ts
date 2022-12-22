@@ -1,8 +1,6 @@
 import {
 	addMonths,
-	isSameDay,
 	isSameMonth,
-	isWithinInterval,
 	max,
 	min,
 } from 'date-fns';
@@ -10,37 +8,33 @@ import {
 import { type DateRange } from './types';
 
 
-export const identity = <T>(x: T) => x;
+export const chunked = <T>(array: ReadonlyArray<T>, size: number): T[][] => {
+	const result: T[][] = [];
+	const length = Math.ceil(array.length / size);
 
-export const combine = (...args: any[]): string => args.filter(identity).join(' ');
+	for (let i = 0; i < length; i++) {
+		result.push(array.slice(i * size, i * size + size));
+	}
+
+	return result;
+}
+
+export const combine = (...args: any[]): string => {
+	let str = '';
+
+	for (let idx = 0, len = args.length; idx < len; idx++) {
+		let val = args[idx];
+
+		if (val) {
+			str && (str += ' ');
+			str += val;
+		}
+	}
+
+	return str;
+};
 
 // Date
-export const isStartOfRange = ({ startDate }: DateRange, day: Date) => (
-	(startDate && isSameDay(day, startDate)) as boolean
-);
-
-export const isEndOfRange = ({ endDate }: DateRange, day: Date) => (
-	(endDate && isSameDay(day, endDate)) as boolean
-);
-
-export const inDateRange = ({ startDate, endDate }: DateRange, day: Date) => {
-	return (
-		startDate && endDate && (
-			isWithinInterval(day, { start: startDate, end: endDate })
-			|| isSameDay(day, startDate)
-			|| isSameDay(day, endDate)
-		)
-	) as boolean;
-};
-
-export const isRangeSameDay = ({ startDate, endDate }: DateRange) => {
-	if (startDate && endDate) {
-		return isSameDay(startDate, endDate);
-	}
-	return false;
-};
-
-
 export const parseOptionalDate = (date: Date | number | undefined, defaultValue: Date) => {
 	if (date) {
 		const parsed = new Date(date);

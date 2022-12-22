@@ -1,11 +1,17 @@
-import * as React from 'react';
-
 import { makeStyles, IconButton, Typography } from '@material-ui/core';
 
 import { combine } from '../utils';
 
 
 const useStyles = makeStyles((theme) => ({
+	start: {
+    borderTopLeftRadius: '50%',
+    borderBottomLeftRadius: '50%'
+  },
+  end: {
+    borderTopRightRadius: '50%',
+    borderBottomRightRadius: '50%'
+  },
 	buttonContainer: {
 		display: 'flex',
 	},
@@ -22,13 +28,22 @@ const useStyles = makeStyles((theme) => ({
 	},
 	filled: {
 		backgroundColor: theme.palette.primary.dark,
-		
+
 		'&:hover': {
 			backgroundColor: theme.palette.primary.dark,
 		},
 	},
 	highlighted: {
-		backgroundColor: theme.palette.action.hover,
+		backgroundColor: theme.palette.action.focus,
+
+		'&:first-of-type, div:empty + &': {
+      borderTopLeftRadius: '50%',
+      borderBottomLeftRadius: '50%'
+    },
+    '&:last-of-type': {
+      borderTopRightRadius: '50%',
+      borderBottomRightRadius: '50%'
+    },
 	},
 	contrast: {
 		color: theme.palette.primary.contrastText,
@@ -39,6 +54,8 @@ interface DayProps {
 	filled?: boolean;
 	outlined?: boolean;
 	highlighted?: boolean;
+	start?: boolean;
+	end?: boolean;
 	disabled?: boolean;
 	onClick?: () => void;
 	onHover?: () => void;
@@ -46,7 +63,17 @@ interface DayProps {
 }
 
 const Day = (props: DayProps) => {
-	const { disabled, highlighted, outlined, filled, onClick, onHover, value } = props;
+	const {
+		filled,
+		outlined,
+		highlighted,
+		start,
+		end,
+		disabled,
+		onClick,
+		onHover,
+		value,
+	} = props;
 
 	const classes = useStyles();
 
@@ -55,6 +82,8 @@ const Day = (props: DayProps) => {
 			className={combine(
 				classes.buttonContainer,
 				!disabled && highlighted && classes.highlighted,
+				start && classes.start,
+        end && classes.end,
 			)}
 		>
 			<IconButton

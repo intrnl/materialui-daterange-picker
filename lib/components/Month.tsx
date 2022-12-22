@@ -7,8 +7,8 @@ import { format, getDate, isSameMonth, isToday, startOfWeek, type Locale, startO
 import Day from './Day';
 import Header from './Header';
 
-import { DateRange, NavigationAction } from '../types';
-import { inDateRange, isEndOfRange, isRangeSameDay, isStartOfRange } from '../utils';
+import { NavigationAction, type DateHelpers } from '../types';
+import { chunked } from '../utils';
 
 
 const useStyles = makeStyles(() => ({
@@ -19,9 +19,8 @@ const useStyles = makeStyles(() => ({
 	grid: {
 		display: 'grid',
 		gridTemplateColumns: 'repeat(7, 1fr)',
-		gridTemplateRows: 'repeat(7, 36px)',
+		gridTemplateRows: 'repeat(1, 36px)',
 		justifyItems: 'center',
-		marginTop: 8,
 	},
 	dayLabel: {
 		lineHeight: '36px',
@@ -32,14 +31,10 @@ interface MonthProps {
 	value: Date;
 	locale?: Locale;
 	marker: symbol;
-	dateRange: DateRange;
 	minDate?: Date | number;
 	maxDate?: Date | number;
 	navState: [boolean, boolean];
-	setValue: (date: Date) => void;
-	helpers: {
-		inHoverRange: (day: Date) => boolean;
-	};
+	helpers: DateHelpers;
 	handlers: {
 		onDayClick: (day: Date) => void;
 		onDayHover: (day: Date) => void;
@@ -55,7 +50,6 @@ const Month = (props: MonthProps) => {
 		handlers,
 		value: date,
 		locale,
-		dateRange,
 		marker,
 		minDate,
 		maxDate,
@@ -77,17 +71,20 @@ const Month = (props: MonthProps) => {
 		return labels;
 	}, [locale]);
 
-	const days = React.useMemo(() => {
+	const weeks = React.useMemo(() => {
 		const startWeek = startOfWeek(startOfMonth(date), { locale });
 		const endMonth = endOfMonth(date);
-	
-		const days = [];
+
+		const arr = [];
 		for (let curr = startWeek; isBefore(curr, endMonth);) {
-			days.push(curr);
+			arr.push(curr);
 			curr = addDays(curr, 1);
 		}
-	
-		return days;
+
+		const chunks = chunked(arr, 7);
+		while (chunks.length < 6) chunks.push([])
+
+		return chunks
 	}, [locale, date]);
 
 	return (
@@ -107,31 +104,37 @@ const Month = (props: MonthProps) => {
 						{day}
 					</Typography>
 				))}
-
-				{days.map((day, idx) => {
-					if (!isSameMonth(date, day)) {
-						return <div key={idx} />;
-					}
-
-					const isStart = isStartOfRange(dateRange, day);
-					const isEnd = isEndOfRange(dateRange, day);
-					const isRangeOneDay = isRangeSameDay(dateRange);
-					const highlighted = inDateRange(dateRange, day) || helpers.inHoverRange(day);
-
-					return (
-						<Day
-							key={idx}
-							filled={isStart || isEnd}
-							outlined={isToday(day)}
-							highlighted={highlighted && !isRangeOneDay}
-							disabled={(minDate != null && day >= minDate) && (maxDate != null && day <= maxDate)}
-							onClick={() => handlers.onDayClick(day)}
-							onHover={() => handlers.onDayHover(day)}
-							value={getDate(day)}
-						/>
-					);
-				})}
 			</div>
+
+			{weeks.map((week, idx) => (
+				<div key={idx} className={classes.grid}>
+					{week.map((day, idx) => {
+						if (!isSameMonth(date, day)) {
+							return <div key={idx} />;
+						}
+
+						const isStart = helpers.isStartDay(day, false)
+						const isEnd = helpers.isEndDay(day, false)
+						const highlighted = helpers.inHighlight(day)
+
+						return (
+							<Day
+								key={idx}
+								filled={isStart || isEnd}
+								outlined={isToday(day)}
+								highlighted={highlighted}
+								start={helpers.isStartDay(day, true)}
+								end={helpers.isEndDay(day, true)}
+								disabled={(minDate != null && day >= minDate) && (maxDate != null && day <= maxDate)}
+								onClick={() => handlers.onDayClick(day)}
+								onHover={() => handlers.onDayHover(day)}
+								value={getDate(day)}
+							/>
+						);
+					})}
+
+				</div>
+			))}
 		</div>
 	);
 };

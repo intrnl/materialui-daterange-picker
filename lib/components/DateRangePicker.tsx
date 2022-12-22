@@ -6,13 +6,11 @@ import {
 	addMonths,
 	addYears,
 	differenceInCalendarMonths,
-	isAfter,
-	isBefore,
 	isSameDay,
 	type Locale,
 } from 'date-fns';
 
-import { type DateRange, type NavigationAction } from '../types';
+import { DateHelpers, type DateRange, type NavigationAction } from '../types';
 import { getValidatedMonths, parseOptionalDate } from '../utils';
 
 import Month from './Month';
@@ -52,36 +50,21 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 	const classes = useStyles();
 	const today = React.useMemo(() => new Date(), []);
 
-	const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
-	const maxDateValid = parseOptionalDate(maxDate, addYears(today, 10));
-	const [intialFirstMonth, initialSecondMonth] = getValidatedMonths(
-		initialDateRange || {},
-		minDateValid,
-		maxDateValid,
-	);
+	const [intialFirstMonth, initialSecondMonth] = React.useMemo(() => {
+		const minDateValid = parseOptionalDate(minDate, addYears(today, -10));
+		const maxDateValid = parseOptionalDate(maxDate, addYears(today, 10));
+
+		return getValidatedMonths(initialDateRange || {}, minDateValid, maxDateValid);
+	}, [initialDateRange, minDate, maxDate]);
 
 	const [dateRange, setDateRange] = React.useState<DateRange>({ ...initialDateRange });
 	const [hoverDay, setHoverDay] = React.useState<Date>();
 	const [firstMonth, setFirstMonth] = React.useState<Date>(intialFirstMonth || today);
-	const [secondMonth, setSecondMonth] = React.useState<Date>(
-		initialSecondMonth || addMonths(firstMonth, 1),
-	);
+	const [secondMonth, setSecondMonth] = React.useState<Date>(initialSecondMonth || (() => addMonths(firstMonth, 1)));
 
 	const { startDate, endDate } = dateRange;
 
 	// handlers
-	const setFirstMonthValidated = (date: Date) => {
-		if (isBefore(date, secondMonth)) {
-			setFirstMonth(date);
-		}
-	};
-
-	const setSecondMonthValidated = (date: Date) => {
-		if (isAfter(date, firstMonth)) {
-			setSecondMonth(date);
-		}
-	};
-
 	const onDayClick = (day: Date) => {
 		if (startDate && !endDate) {
 			const newRange = day < startDate
@@ -95,26 +78,28 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 			}
 
 			setDateRange(newRange);
-		} else {
+		}
+		else {
 			const newRange = { startDate: day, endDate: undefined };
 
 			if (onChange) {
 				onChange(newRange);
 			}
 
-			setDateRange({ startDate: day, endDate: undefined });
+			setDateRange(newRange);
 		}
 
-		setHoverDay(day);
+		setHoverDay(undefined);
 	};
 
 	const onMonthNavigate = (marker: Marker, action: NavigationAction) => {
 		if (marker === MARKERS.FIRST_MONTH) {
 			const firstNew = addMonths(firstMonth, action);
-			if (isBefore(firstNew, secondMonth)) setFirstMonth(firstNew);
-		} else {
+			setFirstMonth(firstNew);
+		}
+		else {
 			const secondNew = addMonths(secondMonth, action);
-			if (isBefore(firstMonth, secondNew)) setSecondMonth(secondNew);
+			setSecondMonth(secondNew);
 		}
 	};
 
@@ -127,19 +112,43 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 	};
 
 	// helpers
-	const inHoverRange = (date: Date) => {
-		if (!startDate || !hoverDay) {
-			return false;
-		}
+	const helpers: DateHelpers = {
+		inHighlight: (date) => {
+			if (!startDate) {
+				return false
+			}
 
-		return (
-			(date >= startDate && date <= hoverDay)
-			|| (date >= hoverDay && date <= startDate)
-		);
-	};
+			if (endDate) {
+				return date >= startDate && date <= endDate
+			}
 
-	const helpers = {
-		inHoverRange,
+			if (!hoverDay) {
+				return false
+			}
+
+			return (
+				(date >= startDate && date <= hoverDay) ||
+				(date >= hoverDay && date <= startDate)
+			);
+		},
+		isStartDay: (date, includeHover) => {
+			if (!startDate) {
+				return false
+			}
+
+			if (includeHover && hoverDay && hoverDay < startDate) {
+				return isSameDay(hoverDay, date)
+			}
+
+			return isSameDay(startDate, date)
+		},
+		isEndDay: (date, includeHover) => {
+			if (includeHover && hoverDay && startDate) {
+				return isSameDay(hoverDay >= startDate! ? hoverDay : startDate!, date)
+			}
+
+			return !!endDate && isSameDay(endDate, date)
+		},
 	};
 
 	const handlers = {
@@ -149,9 +158,9 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 	};
 
 	const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
+
 	const commonProps = {
 		locale,
-		dateRange,
 		minDate,
 		maxDate,
 		helpers,
@@ -163,7 +172,6 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 			<Month
 				{...commonProps}
 				value={firstMonth}
-				setValue={setFirstMonthValidated}
 				navState={[true, canNavigateCloser]}
 				marker={MARKERS.FIRST_MONTH}
 			/>
@@ -173,7 +181,6 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 			<Month
 				{...commonProps}
 				value={secondMonth}
-				setValue={setSecondMonthValidated}
 				navState={[canNavigateCloser, true]}
 				marker={MARKERS.SECOND_MONTH}
 			/>
