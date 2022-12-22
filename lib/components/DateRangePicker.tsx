@@ -68,8 +68,8 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 	const onDayClick = (day: Date) => {
 		if (startDate && !endDate) {
 			const newRange = day < startDate
-				? { startDate: day, endDate: startDate }
-				: { startDate: startDate, endDate: day };
+				? { startDate: new Date(day), endDate: startDate }
+				: { startDate: startDate, endDate: new Date(day) };
 
 			newRange.endDate.setHours(23, 59, 59, 999);
 
@@ -80,7 +80,7 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 			setDateRange(newRange);
 		}
 		else {
-			const newRange = { startDate: day, endDate: undefined };
+			const newRange = { startDate: new Date(day), endDate: undefined };
 
 			if (onChange) {
 				onChange(newRange);
