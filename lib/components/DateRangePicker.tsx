@@ -28,7 +28,7 @@ interface DateRangePickerProps {
 	initialDateRange?: DateRange;
 	minDate?: Date | number;
 	maxDate?: Date | number;
-	onChange: (dateRange: DateRange) => void;
+	onChange?: (dateRange: DateRange) => void;
 }
 
 const DateRangePicker = (props: DateRangePickerProps) => {
@@ -78,12 +78,18 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 				? { startDate: day, endDate: startDate }
 				: { startDate: startDate, endDate: day };
 
-			onChange(newRange);
+			if (onChange) {
+				onChange(newRange);
+			}
+
 			setDateRange(newRange);
 		} else {
 			const newRange = { startDate: day, endDate: undefined };
 
-			onChange(newRange);
+			if (onChange) {
+				onChange(newRange);
+			}
+
 			setDateRange({ startDate: day, endDate: undefined });
 		}
 
