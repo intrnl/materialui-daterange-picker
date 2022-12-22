@@ -10,7 +10,7 @@ specifiers:
   date-fns: ^2.29.3
   react: ^17.0.2
   react-dom: ^17.0.2
-  typescript: ^3.9.10
+  typescript: ^4.9.4
   vite: ^4.0.3
 
 devDependencies:
@@ -23,7 +23,7 @@ devDependencies:
   date-fns: 2.29.3
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
-  typescript: 3.9.10
+  typescript: 4.9.4
   vite: 4.0.3_@types+node@18.11.17
 
 packages:
@@ -1107,8 +1107,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /typescript/3.9.10:
-    resolution: {integrity: sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==}
+  /typescript/4.9.4:
+    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
