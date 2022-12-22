@@ -4,10 +4,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import {
+  format,
   getDate,
   isSameMonth,
   isToday,
   isWithinInterval,
+  startOfWeek,
 } from 'date-fns';
 import {
   getDaysInMonth,
@@ -20,8 +22,6 @@ import Header from './Header';
 import Day from './Day';
 
 import { NavigationAction, DateRange } from '../types';
-
-const WEEK_DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -70,18 +70,30 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
     value: date,
     dateRange,
     marker,
-    setValue: setDate,
     minDate,
     maxDate,
   } = props;
 
   const [back, forward] = props.navState;
 
+  const weekDays = React.useMemo(() => {
+    const date = startOfWeek(new Date())
+    const labels: string[] = [];
+
+    const dayOfMonth = date.getDate()
+
+    for (let i = 0; i < 7; i++) {
+      date.setDate(dayOfMonth + i)
+      labels.push(format(date, 'eeeeee'))
+    }
+
+    return labels
+  }, [])
+
   return (
     <div className={classes.root}>
       <Header
         date={date}
-        setDate={setDate}
         nextDisabled={!forward}
         prevDisabled={!back}
         onClickPrevious={() => handlers.onMonthNavigate(marker, NavigationAction.Previous)}
@@ -89,7 +101,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
       />
 
       <div className={classes.grid}>
-        {WEEK_DAYS.map((day) => (
+        {weekDays.map((day) => (
           <Typography color="textSecondary" key={day} variant="caption" className={classes.dayLabel}>
             {day}
           </Typography>
