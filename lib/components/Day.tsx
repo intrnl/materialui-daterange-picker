@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 		lineHeight: 1.6,
 	},
 	outlined: {
-		border: `1px solid ${theme.palette.primary.dark}`,
+		border: `1px solid ${theme.palette.text.primary}`,
 	},
 	filled: {
 		backgroundColor: theme.palette.primary.dark,
