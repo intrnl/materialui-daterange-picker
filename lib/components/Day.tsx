@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		border: `1px solid ${theme.palette.text.primary}`,
 	},
 	filled: {
-		backgroundColor: theme.palette.primary.dark,
+		backgroundColor: theme.palette.primary.main,
 
 		'&:hover': {
 			backgroundColor: theme.palette.primary.dark,
