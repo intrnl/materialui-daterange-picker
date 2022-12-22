@@ -7,7 +7,7 @@ import {
   getDate,
   isSameMonth,
   isToday,
-  isWithinRange,
+  isWithinInterval,
 } from 'date-fns';
 import {
   getDaysInMonth,
@@ -111,7 +111,7 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
               filled={isStart || isEnd}
               outlined={isToday(day)}
               highlighted={highlighted && !isRangeOneDay}
-              disabled={!isWithinRange(day, minDate, maxDate)}
+              disabled={!isWithinInterval(day, { start: minDate, end: maxDate })}
               startOfRange={isStart && !isRangeOneDay}
               endOfRange={isEnd && !isRangeOneDay}
               onClick={() => handlers.onDayClick(day)}

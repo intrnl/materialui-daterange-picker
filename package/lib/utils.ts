@@ -5,7 +5,7 @@ import {
   isBefore,
   addDays,
   isSameDay,
-  isWithinRange,
+  isWithinInterval,
   isSameMonth,
   addMonths,
   min,
@@ -40,13 +40,15 @@ export const isEndOfRange = ({ endDate }: DateRange, day: Date) => (
   (endDate && isSameDay(day, endDate)) as boolean
 );
 
-export const inDateRange = ({ startDate, endDate }: DateRange, day: Date) => (
-  startDate
-  && endDate
-  && (isWithinRange(day, startDate, endDate)
-  || isSameDay(day, startDate)
-  || isSameDay(day, endDate))
-) as boolean;
+export const inDateRange = ({ startDate, endDate }: DateRange, day: Date) => {
+  return (
+    startDate && endDate && (
+      isWithinInterval(day, { start: startDate, end: endDate }) ||
+      isSameDay(day, startDate) ||
+      isSameDay(day, endDate)
+    )
+  ) as boolean
+}
 
 export const isRangeSameDay = ({ startDate, endDate }: DateRange) => {
   if (startDate && endDate) {
