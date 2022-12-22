@@ -1,7 +1,7 @@
 import React from 'react';
 import {
+  makeStyles,
   Divider,
-  Grid,
 } from '@material-ui/core';
 import { differenceInCalendarMonths } from 'date-fns';
 import Month from './Month';
@@ -11,6 +11,13 @@ import {
   DateRange,
 } from '../types';
 import { MARKERS } from './DateRangePicker';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    gap: '16px',
+  },
+}));
 
 interface MenuProps {
   dateRange: DateRange,
@@ -43,13 +50,15 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     handlers,
   } = props;
 
+  const classes = useStyles()
+
   const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
   const commonProps = {
     dateRange, minDate, maxDate, helpers, handlers,
   };
 
   return (
-    <Grid container direction="row" justifyContent="center" wrap="nowrap">
+    <div className={classes.root}>
       <Month
         {...commonProps}
         value={firstMonth}
@@ -67,7 +76,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         navState={[canNavigateCloser, true]}
         marker={MARKERS.SECOND_MONTH}
       />
-    </Grid>
+    </div>
   );
 };
 
