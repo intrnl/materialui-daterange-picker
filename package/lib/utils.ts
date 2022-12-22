@@ -17,24 +17,19 @@ import { DateRange } from './types';
 
 export const identity = <T>(x: T) => x;
 
-export const chunks = <T>(array: ReadonlyArray<T>, size: number): T[][] => (
-  Array.from(
-    { length: Math.ceil(array.length / size) },
-    (_v, i) => array.slice(i * size, i * size + size),
-  )
-);
-
 export const combine = (...args: any[]): string => args.filter(identity).join(' ');
 
 // Date
 export const getDaysInMonth = (date: Date) => {
   const startWeek = startOfWeek(startOfMonth(date));
   const endWeek = endOfWeek(endOfMonth(date));
+
   const days = [];
   for (let curr = startWeek; isBefore(curr, endWeek);) {
     days.push(curr);
     curr = addDays(curr, 1);
   }
+
   return days;
 };
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import {
+  Divider,
   Grid,
-  makeStyles,
-  Theme,
 } from '@material-ui/core';
 import { differenceInCalendarMonths } from 'date-fns';
 import Month from './Month';
@@ -12,20 +11,6 @@ import {
   DateRange,
 } from '../types';
 import { MARKERS } from './DateRangePicker';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  header: {
-    padding: '20px 70px',
-  },
-  headerItem: {
-    flex: 1,
-    textAlign: 'center',
-  },
-  divider: {
-    borderLeft: `1px solid ${theme.palette.action.hover}`,
-    marginBottom: 20,
-  },
-}));
 
 interface MenuProps {
   dateRange: DateRange,
@@ -46,8 +31,6 @@ interface MenuProps {
 }
 
 const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
-  const classes = useStyles();
-
   const {
     dateRange,
     minDate,
@@ -74,7 +57,9 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
         navState={[true, canNavigateCloser]}
         marker={MARKERS.FIRST_MONTH}
       />
-      <div className={classes.divider} />
+
+      <Divider flexItem orientation='vertical' />
+
       <Month
         {...commonProps}
         value={secondMonth}
