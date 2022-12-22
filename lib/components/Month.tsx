@@ -15,9 +15,11 @@ const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
 		flexDirection: 'column',
+		gap: 4,
 	},
 	grid: {
 		display: 'grid',
+		gap: 4,
 		gridTemplateColumns: 'repeat(7, 1fr)',
 		gridTemplateRows: 'repeat(1, 36px)',
 		justifyItems: 'center',

@@ -36,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
 	highlighted: {
 		backgroundColor: theme.palette.action.focus,
 
+		'& + &': {
+			marginLeft: -4,
+			paddingLeft: 4,
+		},
+
 		'&:first-of-type, div:empty + &': {
       borderTopLeftRadius: '50%',
       borderBottomLeftRadius: '50%'
