@@ -27,15 +27,12 @@ const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    width: 290,
   },
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(7, 1fr)',
     gridTemplateRows: 'repeat(7, 36px)',
     justifyItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
     marginTop: 8,
   },
   dayLabel: {

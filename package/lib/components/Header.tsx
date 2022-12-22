@@ -15,8 +15,6 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginLeft: 16,
-    marginRight: 16,
   },
   button: {
     height: 36,
