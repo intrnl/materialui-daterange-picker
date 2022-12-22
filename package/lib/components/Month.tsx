@@ -124,8 +124,6 @@ const Month: React.FunctionComponent<MonthProps> = (props: MonthProps) => {
               outlined={isToday(day)}
               highlighted={highlighted && !isRangeOneDay}
               disabled={!isWithinInterval(day, { start: minDate, end: maxDate })}
-              startOfRange={isStart && !isRangeOneDay}
-              endOfRange={isEnd && !isRangeOneDay}
               onClick={() => handlers.onDayClick(day)}
               onHover={() => handlers.onDayHover(day)}
               value={getDate(day)}

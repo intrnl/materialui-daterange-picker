@@ -11,12 +11,6 @@ import {
 import { combine } from '../utils';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  leftBorderRadius: {
-    borderRadius: '50% 0 0 50%',
-  },
-  rightBorderRadius: {
-    borderRadius: '0 50% 50% 0',
-  },
   buttonContainer: {
     display: 'flex',
   },
@@ -50,16 +44,12 @@ interface DayProps {
   outlined?: boolean;
   highlighted?: boolean;
   disabled?: boolean;
-  startOfRange?: boolean;
-  endOfRange?: boolean;
   onClick?: () => void;
   onHover?: () => void;
   value: number | string;
 }
 
 const Day: React.FunctionComponent<DayProps> = ({
-  startOfRange,
-  endOfRange,
   disabled,
   highlighted,
   outlined,
@@ -74,8 +64,6 @@ const Day: React.FunctionComponent<DayProps> = ({
     <div
       className={combine(
         classes.buttonContainer,
-        startOfRange && classes.leftBorderRadius,
-        endOfRange && classes.rightBorderRadius,
         !disabled && highlighted && classes.highlighted,
       )}
     >
