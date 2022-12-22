@@ -4,7 +4,7 @@ import { makeStyles, IconButton, Typography } from '@material-ui/core';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
 
-import { format } from 'date-fns';
+import { format, type Locale } from 'date-fns';
 
 const useStyles = makeStyles(() => ({
 	header: {
@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
 
 interface HeaderProps {
 	date: Date;
+	locale?: Locale;
 	nextDisabled: boolean;
 	prevDisabled: boolean;
 	onClickNext: () => void;
@@ -31,11 +32,13 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const { date, nextDisabled, prevDisabled, onClickNext, onClickPrevious } = props;
+  const { date, locale, nextDisabled, prevDisabled, onClickNext, onClickPrevious } = props;
 
 	const classes = useStyles();
 
-	const label = React.useMemo(() => format(date, 'MMMM yyyy'), [date]);
+	const label = React.useMemo(() => {
+		return format(date, 'MMMM yyyy', { locale });
+	}, [locale, date]);
 
 	return (
 		<div className={classes.header}>

@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
-import { format, getDate, isSameMonth, isToday, startOfWeek } from 'date-fns';
+import { format, getDate, isSameMonth, isToday, startOfWeek, type Locale, startOfMonth, endOfMonth, isBefore, addDays } from 'date-fns';
 
 import Day from './Day';
 import Header from './Header';
 
 import { DateRange, NavigationAction } from '../types';
-import { getDaysInMonth, inDateRange, isEndOfRange, isRangeSameDay, isStartOfRange } from '../utils';
+import { inDateRange, isEndOfRange, isRangeSameDay, isStartOfRange } from '../utils';
 
 
 const useStyles = makeStyles(() => ({
@@ -30,6 +30,7 @@ const useStyles = makeStyles(() => ({
 
 interface MonthProps {
 	value: Date;
+	locale?: Locale;
 	marker: symbol;
 	dateRange: DateRange;
 	minDate?: Date | number;
@@ -53,6 +54,7 @@ const Month = (props: MonthProps) => {
 		helpers,
 		handlers,
 		value: date,
+		locale,
 		dateRange,
 		marker,
 		minDate,
@@ -62,23 +64,37 @@ const Month = (props: MonthProps) => {
 	const [back, forward] = props.navState;
 
 	const weekDays = React.useMemo(() => {
-		const date = startOfWeek(new Date());
+		const date = startOfWeek(new Date(), { locale });
 		const labels: string[] = [];
 
 		const dayOfMonth = date.getDate();
 
 		for (let i = 0; i < 7; i++) {
 			date.setDate(dayOfMonth + i);
-			labels.push(format(date, 'eeeeee'));
+			labels.push(format(date, 'eeeeee', { locale }));
 		}
 
 		return labels;
-	}, []);
+	}, [locale]);
+
+	const days = React.useMemo(() => {
+		const startWeek = startOfWeek(startOfMonth(date), { locale });
+		const endMonth = endOfMonth(date);
+	
+		const days = [];
+		for (let curr = startWeek; isBefore(curr, endMonth);) {
+			days.push(curr);
+			curr = addDays(curr, 1);
+		}
+	
+		return days;
+	}, [locale, date]);
 
 	return (
 		<div className={classes.root}>
 			<Header
 				date={date}
+				locale={locale}
 				nextDisabled={!forward}
 				prevDisabled={!back}
 				onClickPrevious={() => handlers.onMonthNavigate(marker, NavigationAction.Previous)}
@@ -92,7 +108,7 @@ const Month = (props: MonthProps) => {
 					</Typography>
 				))}
 
-				{getDaysInMonth(date).map((day, idx) => {
+				{days.map((day, idx) => {
 					if (!isSameMonth(date, day)) {
 						return <div key={idx} />;
 					}

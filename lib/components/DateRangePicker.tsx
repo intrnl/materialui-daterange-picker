@@ -2,7 +2,15 @@ import * as React from 'react';
 
 import { makeStyles, Divider } from '@material-ui/core';
 
-import { addMonths, addYears, differenceInCalendarMonths, isAfter, isBefore, isSameDay } from 'date-fns';
+import {
+	addMonths,
+	addYears,
+	differenceInCalendarMonths,
+	isAfter,
+	isBefore,
+	isSameDay,
+	type Locale,
+} from 'date-fns';
 
 import { type DateRange, type NavigationAction } from '../types';
 import { getValidatedMonths, parseOptionalDate } from '../utils';
@@ -28,15 +36,17 @@ interface DateRangePickerProps {
 	initialDateRange?: DateRange;
 	minDate?: Date | number;
 	maxDate?: Date | number;
+	locale?: Locale;
 	onChange?: (dateRange: DateRange) => void;
 }
 
 const DateRangePicker = (props: DateRangePickerProps) => {
 	const {
-		onChange,
 		initialDateRange,
 		minDate,
 		maxDate,
+		locale,
+		onChange,
 	} = props;
 
 	const classes = useStyles();
@@ -140,6 +150,7 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 
 	const canNavigateCloser = differenceInCalendarMonths(secondMonth, firstMonth) >= 2;
 	const commonProps = {
+		locale,
 		dateRange,
 		minDate,
 		maxDate,

@@ -1,15 +1,10 @@
 import {
-	addDays,
 	addMonths,
-	endOfMonth,
-	isBefore,
 	isSameDay,
 	isSameMonth,
 	isWithinInterval,
 	max,
 	min,
-	startOfMonth,
-	startOfWeek,
 } from 'date-fns';
 
 import { type DateRange } from './types';
@@ -20,19 +15,6 @@ export const identity = <T>(x: T) => x;
 export const combine = (...args: any[]): string => args.filter(identity).join(' ');
 
 // Date
-export const getDaysInMonth = (date: Date) => {
-	const startWeek = startOfWeek(startOfMonth(date));
-	const endMonth = endOfMonth(date);
-
-	const days = [];
-	for (let curr = startWeek; isBefore(curr, endMonth);) {
-		days.push(curr);
-		curr = addDays(curr, 1);
-	}
-
-	return days;
-};
-
 export const isStartOfRange = ({ startDate }: DateRange, day: Date) => (
 	(startDate && isSameDay(day, startDate)) as boolean
 );
