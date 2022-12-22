@@ -1,15 +1,16 @@
 import * as path from 'node:path';
 
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react';
+import dts from 'vite-plugin-dts';
 
 
 export default defineConfig({
   build: {
     lib: {
       formats: ['es', 'cjs'],
-      entry: path.resolve(__dirname, 'lib/index.ts'),
-      fileName: 'materialui-daterange-picker',
+      entry: path.resolve(__dirname, './lib/index.ts'),
+      fileName: (format) => `material-daterange-picker.${format}.js`,
     },
     rollupOptions: {
       external (source, importer) {
@@ -26,5 +27,6 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    dts({ outputDir: './types/' }),
   ],
 });
