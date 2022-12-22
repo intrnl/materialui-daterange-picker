@@ -78,6 +78,8 @@ const DateRangePicker = (props: DateRangePickerProps) => {
 				? { startDate: day, endDate: startDate }
 				: { startDate: startDate, endDate: day };
 
+			newRange.endDate.setHours(23, 59, 59, 999);
+
 			if (onChange) {
 				onChange(newRange);
 			}
