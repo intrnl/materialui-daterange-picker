@@ -1,9 +1,19 @@
 {
-	"name": "materialui-daterange-picker",
+	"name": "@intrnl/materialui-daterange-picker",
+	"description": "Ranged date picker component for Material UI v4",
+	"version": "0.1.0",
+	"author": "intrnl",
 	"license": "MIT",
-	"source": "./lib/index.ts",
-	"main": "./dist/materialui-daterangepicker.js",
-	"module": "./dist/materialui-daterangepicker.mjs",
+	"repository": {
+		"url": "https://codeberg.org/intrnl/materialui-daterange-picker"
+	},
+	"files": [
+		"dist/",
+		"types/"
+	],
+	"main": "./dist/materialui-daterangepicker.es.js",
+	"module": "./dist/materialui-daterangepicker.cjs.js",
+	"types": "./types/index.d.ts",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build"
