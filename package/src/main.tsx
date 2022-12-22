@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import { DateRange, DateRangePicker } from '../lib/index';
 
 const App = () => {
-  const [dateRange, setDateRange] = React.useState(undefined);
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(undefined);
 
   return (
     <div>
-      <div>{JSON.stringify(dateRange)}</div>
-
       <DateRangePicker
-        onChange={(range) => setDateRange(range)}
+      onChange={(range) => setDateRange(range)}
       />
+
+      <div>{JSON.stringify(dateRange)}</div>
     </div>
   );
 }
