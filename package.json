@@ -1,6 +1,13 @@
 {
 	"name": "materialui-daterange-picker",
 	"license": "MIT",
+	"source": "./lib/index.ts",
+	"main": "./dist/materialui-daterangepicker.js",
+	"module": "./dist/materialui-daterangepicker.mjs",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build"
+	},
 	"peerDependencies": {
 		"@material-ui/core": "^4.9.4",
 		"@material-ui/icons": "^4.9.1",
@@ -11,6 +18,7 @@
 	"devDependencies": {
 		"@material-ui/core": "^4.12.4",
 		"@material-ui/icons": "^4.11.3",
+		"@types/node": "^18.11.17",
 		"@types/react": "^17.0.52",
 		"@types/react-dom": "^17",
 		"@vitejs/plugin-react": "^3.0.0",
