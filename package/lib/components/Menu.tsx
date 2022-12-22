@@ -81,7 +81,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
     dateRange, minDate, maxDate, helpers, handlers,
   };
   return (
-    <Paper elevation={5} square>
+    <div>
       <Grid container direction="row" wrap="nowrap">
         <Grid>
           <Grid container className={classes.header} alignItems="center">
@@ -127,7 +127,7 @@ const Menu: React.FunctionComponent<MenuProps> = (props: MenuProps) => {
           />
         </Grid>
       </Grid>
-    </Paper>
+    </div>
   );
 };
 
