@@ -1,3 +1,5 @@
+import { type CSSProperties } from 'react';
+
 import { makeStyles, IconButton, Typography } from '@material-ui/core';
 
 import { combine } from '../utils';
@@ -40,15 +42,6 @@ const useStyles = makeStyles((theme) => ({
 			marginLeft: -4,
 			paddingLeft: 4,
 		},
-
-		'&:first-of-type, div:empty + &': {
-      borderTopLeftRadius: '50%',
-      borderBottomLeftRadius: '50%'
-    },
-    '&:last-of-type': {
-      borderTopRightRadius: '50%',
-      borderBottomRightRadius: '50%'
-    },
 	},
 	contrast: {
 		color: theme.palette.primary.contrastText,
@@ -65,6 +58,7 @@ interface DayProps {
 	onClick?: () => void;
 	onHover?: () => void;
 	value: number | string;
+	style?: CSSProperties;
 }
 
 const Day = (props: DayProps) => {
@@ -78,6 +72,7 @@ const Day = (props: DayProps) => {
 		onClick,
 		onHover,
 		value,
+		style,
 	} = props;
 
 	const classes = useStyles();
@@ -90,6 +85,7 @@ const Day = (props: DayProps) => {
 				start && classes.start,
         end && classes.end,
 			)}
+			style={style}
 		>
 			<IconButton
 				className={combine(

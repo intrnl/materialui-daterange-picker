@@ -108,35 +108,47 @@ const Month = (props: MonthProps) => {
 				))}
 			</div>
 
-			{weeks.map((week, idx) => (
-				<div key={idx} className={classes.grid}>
-					{week.map((day, idx) => {
-						if (!isSameMonth(date, day)) {
-							return <div key={idx} />;
-						}
+			{weeks.map((week, idx) => {
+				const end = week.length - 1;
+				let offset = 1;
 
-						const isStart = helpers.isStartDay(day, false)
-						const isEnd = helpers.isEndDay(day, false)
-						const highlighted = helpers.inHighlight(day)
+				return (
+					<div key={idx} className={classes.grid}>
+						{week.map((day, idx) => {
+							if (!isSameMonth(date, day)) {
+								offset += 1;
+								return null;
+							}
+	
+							const isStart = helpers.isStartDay(day, false);
+							const isEnd = helpers.isEndDay(day, false);
+							const highlighted = helpers.inHighlight(day);
 
-						return (
-							<Day
-								key={idx}
-								filled={isStart || isEnd}
-								outlined={isToday(day)}
-								highlighted={highlighted}
-								start={helpers.isStartDay(day, true)}
-								end={helpers.isEndDay(day, true)}
-								disabled={(minDate != null && day >= minDate) && (maxDate != null && day <= maxDate)}
-								onClick={() => handlers.onDayClick(day)}
-								onHover={() => handlers.onDayHover(day)}
-								value={getDate(day)}
-							/>
-						);
-					})}
+							const startPos = offset;
+              const isRoundedStart = startPos > 1 || idx === 0;
+              const isRoundedEnd = idx === end;
 
-				</div>
-			))}
+							offset = 0;
+	
+							return (
+								<Day
+									key={idx}
+									filled={isStart || isEnd}
+									outlined={isToday(day)}
+									highlighted={highlighted}
+									start={isRoundedStart || helpers.isStartDay(day, true)}
+									end={isRoundedEnd || helpers.isEndDay(day, true)}
+									disabled={(minDate != null && day >= minDate) && (maxDate != null && day <= maxDate)}
+									onClick={() => handlers.onDayClick(day)}
+									onHover={() => handlers.onDayHover(day)}
+									value={getDate(day)}
+									style={startPos > 1 ? { gridColumnStart: startPos } : undefined}
+								/>
+							);
+						})}
+					</div>
+				)
+			})}
 		</div>
 	);
 };
