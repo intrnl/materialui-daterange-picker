@@ -32,7 +32,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const { date, locale, nextDisabled, prevDisabled, onClickNext, onClickPrevious } = props;
+	const { date, locale, nextDisabled, prevDisabled, onClickNext, onClickPrevious } = props;
 
 	const classes = useStyles();
 

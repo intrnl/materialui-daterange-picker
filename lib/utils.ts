@@ -56,6 +56,6 @@ export const getValidatedMonths = (range: DateRange, minDate: Date, maxDate: Dat
 
 		return [newStart, isSameMonth(newStart, newEnd) ? addMonths(newStart, 1) : newEnd];
 	}
-	
+
 	return [startDate, endDate];
 };

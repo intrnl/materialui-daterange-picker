@@ -7,13 +7,13 @@ import { combine } from '../utils';
 
 const useStyles = makeStyles((theme) => ({
 	start: {
-    borderTopLeftRadius: '50%',
-    borderBottomLeftRadius: '50%'
-  },
-  end: {
-    borderTopRightRadius: '50%',
-    borderBottomRightRadius: '50%'
-  },
+		borderTopLeftRadius: '50%',
+		borderBottomLeftRadius: '50%'
+	},
+	end: {
+		borderTopRightRadius: '50%',
+		borderBottomRightRadius: '50%'
+	},
 	buttonContainer: {
 		display: 'flex',
 	},
@@ -83,7 +83,7 @@ const Day = (props: DayProps) => {
 				classes.buttonContainer,
 				!disabled && highlighted && classes.highlighted,
 				start && classes.start,
-        end && classes.end,
+				end && classes.end,
 			)}
 			style={style}
 		>

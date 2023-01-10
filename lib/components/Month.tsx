@@ -119,17 +119,17 @@ const Month = (props: MonthProps) => {
 								offset += 1;
 								return null;
 							}
-	
+
 							const isStart = helpers.isStartDay(day, false);
 							const isEnd = helpers.isEndDay(day, false);
 							const highlighted = helpers.inHighlight(day);
 
 							const startPos = offset;
-              const isRoundedStart = startPos > 1 || idx === 0;
-              const isRoundedEnd = idx === end;
+							const isRoundedStart = startPos > 1 || idx === 0;
+							const isRoundedEnd = idx === end;
 
 							offset = 0;
-	
+
 							return (
 								<Day
 									key={idx}
