@@ -63,10 +63,8 @@ const Month = (props: MonthProps) => {
 		const date = startOfWeek(new Date(), { locale });
 		const labels: string[] = [];
 
-		const dayOfMonth = date.getDate();
-
 		for (let i = 0; i < 7; i++) {
-			date.setDate(dayOfMonth + i);
+			date.setDate(date.getDate() + (i > 0 ? 1 : 0));
 			labels.push(format(date, 'eeeeee', { locale }));
 		}
 
